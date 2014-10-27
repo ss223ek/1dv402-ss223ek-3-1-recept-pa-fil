@@ -10,6 +10,18 @@ namespace FiledRecipes.Domain
     /// </summary>
     public class RecipeRepository : IRecipeRepository
     {
+
+        public void Load() 
+        {
+        //tom
+        }
+
+        public void Save() 
+        {
+        //tom
+        }
+        
+        
         /// <summary>
         /// Represents the recipe section.
         /// </summary>
