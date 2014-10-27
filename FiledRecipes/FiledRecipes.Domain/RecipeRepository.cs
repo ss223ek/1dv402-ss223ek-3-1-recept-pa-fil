@@ -11,17 +11,45 @@ namespace FiledRecipes.Domain
     public class RecipeRepository : IRecipeRepository
     {
 
-        public void Load() 
+        public void Load()
         {
-        //tom
+            //Skapa lista med referenser till receptobjekt, börja med fyra
+            List<Recipe> RecipeList = new List<Recipe>(4);
+
+            try
+            {
+                // using stänger automatiskt filen efter användning
+                using (StreamReader reader = new StreamReader("Recipes.txt"))
+                {
+                    string line;
+
+                    // läser tills det inte finns rader att läsa
+                    while ((line = reader.ReadLine()) != null)
+                    {
+
+                        Console.WriteLine(line);
+                        // Delar upp en sträng med 10 resultat till tio delsträngar 
+                        // med ett resultat i varje sträng.
+                        //string[] scores = line.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("feeel!");
+            }
         }
 
-        public void Save() 
+
+
+        public void Save()
         {
-        //tom
+            //tom
         }
-        
-        
+
+
         /// <summary>
         /// Represents the recipe section.
         /// </summary>
