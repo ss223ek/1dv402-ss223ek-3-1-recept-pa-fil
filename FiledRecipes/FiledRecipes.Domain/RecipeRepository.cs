@@ -29,29 +29,27 @@ namespace FiledRecipes.Domain
                     {
                         if (!line.Equals(""))       //om innehåll i raden så undersöker vi, annars läs nästa
                         {
-                            if (line.Equals("[Recept]"))     //nytt recept på gång i nästa rad
+                            if (line.Equals("[Recept]"))            //nytt recept på gång i nästa rad
                             {
                                 RRStatus = RecipeReadStatus.New;
                             }
                             else if (line.Equals("[Ingredienser]"))  //nya ingrediens i nästa rad
                             {
                                 RRStatus = RecipeReadStatus.Ingredient;
-
                             }
                             else if (line.Equals("[Instruktioner]")) //nya instruktioner i nästa rad
                             {
                                 RRStatus = RecipeReadStatus.Instruction;
-
                             }
-
-                            else     // här är det klart att nästa rad är namn/ingrediens eller instruktion
+                            else                                    // här är det klart att nästa rad är namn/ingrediens eller instruktion
                             {
                                 switch (RRStatus)
                                 {
-                                    case RecipeReadStatus.New: // Skapa nytt receptobjekt, lägg i listan
+                                    case RecipeReadStatus.New:      // Skapa nytt receptobjekt, lägg i listan
                                         Recipe temp = new Recipe(line);
                                         RecipeList.Add(temp);
                                         break;
+
 
                                     case RecipeReadStatus.Ingredient: // Raden är en ingrediens och ska delas upp
 
@@ -67,12 +65,12 @@ namespace FiledRecipes.Domain
                                             tempIngred.Name = iParts[2];
                                             RecipeList[RecipeList.Count - 1].Add(tempIngred);    //argument tempIngred är ref till Ingrediend, ger rätt metod(Add)
                                         }
-
                                         catch
                                         {
                                             Console.WriteLine("illa, inte tre delar i ingrediens!");
                                         }
                                         break;
+
 
                                     case RecipeReadStatus.Instruction:                      // Lägg till raden till receptets lista med instruktioner
                                         RecipeList[RecipeList.Count - 1].Add(line);         //lägg det i det listans sista recept (count-1)
@@ -83,47 +81,27 @@ namespace FiledRecipes.Domain
                                         throw new FileFormatException();
                                         break;
                                 }
-
                             }
                         }
-
-                        // Console.WriteLine(line);----------------------för test
-
-                    }//fil stängd
-
-
-
-
-
-                }
-
-
-
+                    }
+                }//fil stängd nu
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("feeel!");
             }
 
-            //// sortera listan
-
+                                            // sortera listan
             RecipeList.Sort();              //Recipe har ju implementerat interface IComparable!...såklart!
 
-            this._recipes = RecipeList;                                 // tilldela _recipes ref
+            this._recipes = RecipeList;     // tilldela _recipes ref, dvs fältet i objektet
 
-            //tilldelad IsMod, varför?
+            //tilldelad IsMod, varför? Flaggar troligen true vid radering
             IsModified = false;
 
             //anropa OnReCh , Varför?
-
             OnRecipesChanged(EventArgs.Empty);
-
-
-
-
         }
-
 
 
         public void Save()
@@ -135,11 +113,8 @@ namespace FiledRecipes.Domain
                 {
                     foreach (IRecipe klo in _recipes)           //för varje referens i receptlistan
                     {
-                        if (klo != null)
+                        if (klo != null)                        // klo är alias för varje referens till recept som finns
                         {
-                            //writer.WriteLine(klo);    //vad skrivs ut nu? info om namnrymd o namn, (alla i lista)
-
-
                             writer.WriteLine(SectionRecipe);
                             writer.WriteLine(klo.Name);
 
@@ -147,9 +122,9 @@ namespace FiledRecipes.Domain
                             //----------------------------------- ingredienser från referenslista i recipe-objekt
                             IEnumerable<IIngredient> tempList;             //temporär lista
                             tempList = klo.Ingredients;
-                            foreach (IIngredient tempIngrediet in tempList)           // ut med allt från lista
+                            foreach (IIngredient tempIngrediet in tempList)           // ut med allt från lista med ingredienser
                             {
-                                if (tempIngrediet != null)
+                                if (tempIngrediet != null)                             // dela upp egenskaper och avgränsa
                                 {
                                     writer.WriteLine("{0};{1};{2}", tempIngrediet.Amount, tempIngrediet.Measure, tempIngrediet.Name);
                                 }
@@ -174,9 +149,6 @@ namespace FiledRecipes.Domain
                                     writer.WriteLine("[null]");
                                 }
                             }
-
-
-
                         }
                         else
                         {
