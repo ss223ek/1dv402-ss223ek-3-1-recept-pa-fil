@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="FiledRecipes.Views.RecipeView">
-    <Position X="1.25" Y="2" Width="1.5" />
+    <Position X="0.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Views\RecipeView.cs</FileName>
@@ -9,12 +9,22 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="FiledRecipes.App.Mvp.ViewBase">
-    <Position X="3.5" Y="0.75" Width="3.25" />
+    <Position X="0.5" Y="0.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>BQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAgAAAAA=</HashCode>
       <FileName>App\Mvp\ViewBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="FiledRecipes.Domain.Recipe">
+    <Position X="5.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="FiledRecipes.Domain.Ingredient">
+    <Position X="8.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

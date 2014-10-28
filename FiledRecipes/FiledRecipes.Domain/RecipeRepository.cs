@@ -60,8 +60,6 @@ namespace FiledRecipes.Domain
                                         // lägg in ref i receptets lista med ingredienser (det sista i listan)
                                         try
                                         {
-                                            //string[] iParts = line.Split(new Char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
                                             string[] iParts = line.Split(';');
                                             Ingredient tempIngred = new Ingredient();
                                             tempIngred.Amount = iParts[0];
@@ -108,15 +106,16 @@ namespace FiledRecipes.Domain
                 Console.WriteLine("feeel!");
             }
 
-            // sortera listan
+            //// sortera listan
 
-            // tilldela _recipes ref
-            this._recipes = RecipeList;
+            RecipeList.Sort();              //Recipe har ju implementerat interface IComparable!...såklart!
 
-            //tilldelad IsMod
+            this._recipes = RecipeList;                                 // tilldela _recipes ref
+
+            //tilldelad IsMod, varför?
             IsModified = false;
 
-            //anropa OnReCh
+            //anropa OnReCh , Varför?
 
             OnRecipesChanged(EventArgs.Empty);
 
@@ -129,7 +128,68 @@ namespace FiledRecipes.Domain
 
         public void Save()
         {
-            //tom
+            try
+            {
+                // using stänger automatiskt filen efter användning
+                using (StreamWriter writer = new StreamWriter("Recipes.txt"))
+                {
+                    foreach (IRecipe klo in _recipes)           //för varje referens i receptlistan
+                    {
+                        if (klo != null)
+                        {
+                            //writer.WriteLine(klo);    //vad skrivs ut nu? info om namnrymd o namn, (alla i lista)
+
+
+                            writer.WriteLine(SectionRecipe);
+                            writer.WriteLine(klo.Name);
+
+                            writer.WriteLine(SectionIngredients);
+                            //----------------------------------- ingredienser från referenslista i recipe-objekt
+                            IEnumerable<IIngredient> tempList;             //temporär lista
+                            tempList = klo.Ingredients;
+                            foreach (IIngredient tempIngrediet in tempList)           // ut med allt från lista
+                            {
+                                if (tempIngrediet != null)
+                                {
+                                    writer.WriteLine("{0};{1};{2}", tempIngrediet.Amount, tempIngrediet.Measure, tempIngrediet.Name);
+                                }
+                                else
+                                {
+                                    writer.WriteLine("[null]");
+                                }
+                            }
+
+                            writer.WriteLine(SectionInstructions);
+                            //----------------------------------- instruktioner från stringlista i recipe-objekt
+                            IEnumerable<string> tempStringList;         //temporär lista med strängar
+                            tempStringList = klo.Instructions;
+                            foreach (string tempInstruction in tempStringList)      //ut med allt från lista, ToString anpassas till sträng
+                            {
+                                if (tempInstruction != null)
+                                {
+                                    writer.WriteLine(tempInstruction);
+                                }
+                                else
+                                {
+                                    writer.WriteLine("[null]");
+                                }
+                            }
+
+
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("[null]");
+                        }
+                    }
+
+                }
+            }
+            catch
+            {
+                Console.WriteLine("fel i skrivning till disk");
+            }
         }
 
 
