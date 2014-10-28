@@ -14,7 +14,7 @@ namespace FiledRecipes.Domain
         public void Load()
         {
             //Skapa lista med referenser till receptobjekt, börja med fyra
-            List<Recipe> RecipeList = new List<Recipe>(4);
+            List<IRecipe> RecipeList = new List<IRecipe>(4);
 
             try
             {
@@ -80,38 +80,53 @@ namespace FiledRecipes.Domain
 
                                     case RecipeReadStatus.Instruction:                      // Lägg till raden till receptets lista med instruktioner
                                         RecipeList[RecipeList.Count - 1].Add(line);         //lägg det i det listans sista recept (count-1)
-                                        //parameter line är en string vilket anropar rätt metod i Recipe.cs
+                                                                                 //parameter line är en string vilket anropar rätt metod i Recipe.cs
                                         break;
 
 
-                                    default: break;
+                                    default:
+                                        throw new FileFormatException();
+
+                                        break;
                                 }
 
-
-
-
-
-
-
-
                             }
-
-
-
                         }
 
-
-
                         Console.WriteLine(line);
-  
 
-                    }
+                    }//fil stängd
+
+                   
+
+
+
                 }
+
+
+
             }
+
             catch (Exception ex)
             {
                 Console.WriteLine("feeel!");
             }
+
+            // sortera listan
+
+            // tilldela _recipes ref
+            this._recipes = RecipeList;
+
+            //tilldelad IsMod
+            IsModified = false;
+
+            //anropa OnReCh
+
+            OnRecipesChanged(EventArgs.Empty);
+
+
+
+
         }
 
 
