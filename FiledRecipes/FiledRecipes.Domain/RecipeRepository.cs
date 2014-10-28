@@ -93,7 +93,7 @@ namespace FiledRecipes.Domain
                             }
                         }
 
-                        Console.WriteLine(line);
+                       // Console.WriteLine(line);----------------------för test
 
                     }//fil stängd
 
