@@ -22,16 +22,88 @@ namespace FiledRecipes.Domain
                 using (StreamReader reader = new StreamReader("Recipes.txt"))
                 {
                     string line;
+                    RecipeReadStatus RRStatus = RecipeReadStatus.Indefinite;
 
                     // läser tills det inte finns rader att läsa
                     while ((line = reader.ReadLine()) != null)
                     {
+                        if (!line.Equals(""))       //om innehåll i raden så undersöker vi, annars läs nästa
+                        {
+                            if (line.Equals("[Recept]"))     //nytt recept på gång i nästa rad
+                            {
+                                RRStatus = RecipeReadStatus.New;
+                            }
+                            else if (line.Equals("[Ingredienser]"))  //nya ingrediens i nästa rad
+                            {
+                                RRStatus = RecipeReadStatus.Ingredient;
+
+                            }
+                            else if (line.Equals("[Instruktioner]")) //nya instruktioner i nästa rad
+                            {
+                                RRStatus = RecipeReadStatus.Instruction;
+
+                            }
+
+                            else     // här är det klart att nästa rad är namn/ingrediens eller instruktion
+                            {
+                                switch (RRStatus)
+                                {
+                                    case RecipeReadStatus.New: // Skapa nytt receptobjekt, lägg i listan
+                                        Recipe temp = new Recipe(line);
+                                        RecipeList.Add(temp);
+                                        break;
+
+                                    case RecipeReadStatus.Ingredient: // Raden är en ingrediens och ska delas upp
+
+                                        // Delar upp en sträng till tre delsträngar...om det går...
+                                        // lägg sedan in i temporär ref
+                                        // lägg in ref i receptets lista med ingredienser (det sista i listan)
+                                        try
+                                        {
+                                            string[] iParts = line.Split(new Char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                            Ingredient tempIngred = new Ingredient();
+                                            tempIngred.Amount = iParts[0];
+                                            tempIngred.Measure = iParts[1];
+                                            tempIngred.Name = iParts[2];
+                                            RecipeList[RecipeList.Count - 1].Add(tempIngred);
+                                        }
+
+                                        catch
+                                        {
+                                            Console.WriteLine("illa, inte tre delar i ingrediens!");
+                                        }
+
+
+
+
+                                        break;
+
+                                    case RecipeReadStatus.Instruction:                      // Lägg till raden till receptets lista med instruktioner
+                                        RecipeList[RecipeList.Count - 1].Add(line);         //lägg det i det listans sista recept (count-1)
+                                        //parameter line är en string vilket anropar rätt metod i Recipe.cs
+                                        break;
+
+
+                                    default: break;
+                                }
+
+
+
+
+
+
+
+
+                            }
+
+
+
+                        }
+
+
 
                         Console.WriteLine(line);
-                        // Delar upp en sträng med 10 resultat till tio delsträngar 
-                        // med ett resultat i varje sträng.
-                        //string[] scores = line.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
+  
 
                     }
                 }
