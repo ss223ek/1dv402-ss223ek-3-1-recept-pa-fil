@@ -60,44 +60,40 @@ namespace FiledRecipes.Domain
                                         // lägg in ref i receptets lista med ingredienser (det sista i listan)
                                         try
                                         {
-                                            string[] iParts = line.Split(new Char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                            //string[] iParts = line.Split(new Char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                            string[] iParts = line.Split(';');
                                             Ingredient tempIngred = new Ingredient();
                                             tempIngred.Amount = iParts[0];
                                             tempIngred.Measure = iParts[1];
                                             tempIngred.Name = iParts[2];
-                                            RecipeList[RecipeList.Count - 1].Add(tempIngred);
+                                            RecipeList[RecipeList.Count - 1].Add(tempIngred);    //argument tempIngred är ref till Ingrediend, ger rätt metod(Add)
                                         }
 
                                         catch
                                         {
                                             Console.WriteLine("illa, inte tre delar i ingrediens!");
                                         }
-
-
-
-
                                         break;
 
                                     case RecipeReadStatus.Instruction:                      // Lägg till raden till receptets lista med instruktioner
                                         RecipeList[RecipeList.Count - 1].Add(line);         //lägg det i det listans sista recept (count-1)
-                                                                                 //parameter line är en string vilket anropar rätt metod i Recipe.cs
-                                        break;
+                                        break;                                                  //argument line är en string vilket anropar rätt metod i Recipe.cs
 
 
                                     default:
                                         throw new FileFormatException();
-
                                         break;
                                 }
 
                             }
                         }
 
-                       // Console.WriteLine(line);----------------------för test
+                        // Console.WriteLine(line);----------------------för test
 
                     }//fil stängd
 
-                   
+
 
 
 
